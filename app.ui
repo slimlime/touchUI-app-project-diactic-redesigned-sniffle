@@ -1,46 +1,50 @@
 <script>
 export default {
   config: {
-    "pages": [
-      "pages/index",
-      "pages/detail",
-      "pages/helloWorldPage"
-    ],
-    "theme": {
+    pages: ["pages/index", "pages/detail", "pages/helloWorldPage"],
+    theme: {
       "theme-color": "#3399ff"
     },
-    "window": {
-      "scrollType": "div",
-      "navigationBarBackgroundColor":"#ffffff",
-      "navigationBarTextStyle":"black",
-      "navigationBarBorderColor":"rgba(231, 231, 231, 0.6)"
+    window: {
+      scrollType: "div",
+      navigationBarBackgroundColor: "#ffffff",
+      navigationBarTextStyle: "black",
+      navigationBarBorderColor: "rgba(231, 231, 231, 0.6)"
     },
-    "tabBar": {
-      "color": "#7a7e83",
-      "selectedColor": "#39f",
-      "borderColor": "rgba(231, 231, 231, 0.6)",
-      "backgroundColor": "#fff",
-      "list": [
+    // tabBar for global app. Add new page ref if necessary. ORdered.
+    // Icons displayed (when not positioned to Top)
+
+    tabBar: {
+      color: "#7a7e83",
+      selectedColor: "#39f",
+      borderColor: "rgba(231, 231, 231, 0.6)",
+      backgroundColor: "#fff",
+      list: [
         {
-          "pagePath": "pages/index",
-          "iconName": "home",
-          "text": "首页"
+          pagePath: "pages/index",
+          iconName: "home",
+          text: "首页"
         },
         {
-          "pagePath": "pages/user",
-          "iconName": "user",
-          "text": "我的"
+          pagePath: "pages/user",
+          iconName: "user",
+          text: "我的"
+        },
+        {
+          pagePath: "pages/helloWorldPage",
+          iconName: "home",
+          selectedIconName: "arrow-left",
+          text: "HelloWorld"
         }
       ]
     },
-    "networkBaseUrl":""
+    networkBaseUrl: ""
   },
-  data () {
+  data() {
     return {
       //全局变量
-      globalData: {
-      },
-      WIN_WIDTH:ui.WIN_WIDTH,
+      globalData: {},
+      WIN_WIDTH: ui.WIN_WIDTH,
       tabIndex: 0,
       tabBarList: [],
       navStyle: {},
@@ -49,159 +53,156 @@ export default {
       headerHeight: ui.DEFAULT_HEADER_HEIGHT,
       paths: [],
       barHeight: ui.STATUS_BAR_HEIGHT,
-      showSlideMenu:false
-    }
+      showSlideMenu: false
+    };
   },
   computed: {
     // 控制通用导航栏是否显示
-    navigationBarVisible () {
-      return this.winConfig.navigationStyle !== 'custom'
+    navigationBarVisible() {
+      return this.winConfig.navigationStyle !== "custom";
     },
     // 控制通用导航栏是否显示返回按钮（首页不显示，其他页显示）
-    showBack () {
-      let homePath = this.paths[0]
+    showBack() {
+      let homePath = this.paths[0];
       if (this.tabBar && this.tabBar.paths) {
-        return this.tabBar.paths.indexOf(homePath) < 0
+        return this.tabBar.paths.indexOf(homePath) < 0;
       } else {
-        return homePath !== this.$route.path
+        return homePath !== this.$route.path;
       }
     },
     // 通用导航栏应用app.json和page.json的设置
-    winConfig () {
-      let window = this.$router.options.window
-      let config = { ...window, ...this.pageConfig }
-      let color = config.navigationBarTextStyle || 'white'
+    winConfig() {
+      let window = this.$router.options.window;
+      let config = { ...window, ...this.pageConfig };
+      let color = config.navigationBarTextStyle || "white";
 
-      let scrollType = document.body.getAttribute('scroll-type')
+      let scrollType = document.body.getAttribute("scroll-type");
 
       this.navStyle = {
         backgroundColor: config.navigationBarBackgroundColor,
         color: color,
         borderBottom: `1px solid ${config.navigationBarBorderColor}`,
         backgroundImage: config.navigationBarBackgroundGradient,
-        position: scrollType === 'body' ? 'fixed' : 'absolute'
-      }
+        position: scrollType === "body" ? "fixed" : "absolute"
+      };
 
       if (this.navStyle.backgroundColor) {
-        this.navStyle.backgroundImage = 'none'
+        this.navStyle.backgroundImage = "none";
       }
 
       if (config.navigationBarBorderColor) {
-        this.navStyle.borderBottom = `1px solid ${config.navigationBarBorderColor}`
+        this.navStyle.borderBottom = `1px solid ${
+          config.navigationBarBorderColor
+        }`;
       } else {
-        this.navStyle.borderBottom = '0'
+        this.navStyle.borderBottom = "0";
       }
-      return config
+      return config;
     },
     // 控制底部标签栏是否显示
-    isTabBar () {
-      return this.tabBarList && this.tabBarList.length > 0
+    isTabBar() {
+      return this.tabBarList && this.tabBarList.length > 0;
     },
     // 设置底部标签栏样式
-    tabBarStyle () {
-      let style = {}
-      if (this.navigationBarVisible && this.tabBar.position === 'top') {
-        style.top = this.headerHeight + 'px'
+    tabBarStyle() {
+      let style = {};
+      if (this.navigationBarVisible && this.tabBar.position === "top") {
+        style.top = this.headerHeight + "px";
       }
-      let scrollType = document.body.getAttribute('scroll-type')
-      style.position = scrollType === 'body' ? 'fixed' : 'absolute'
-      return style
+      let scrollType = document.body.getAttribute("scroll-type");
+      style.position = scrollType === "body" ? "fixed" : "absolute";
+      return style;
     },
 
-    bottom () {
-      return this.isTabBar ? `${this.tabBarHeight}px` : 0
+    bottom() {
+      return this.isTabBar ? `${this.tabBarHeight}px` : 0;
     },
     // 底部标签栏应用app.json和page.json的设置
-    pageConfig () {
+    pageConfig() {
       if (this.isTabBar) {
-        return this.tabBarList[this.tabIndex].pageConfig
+        return this.tabBarList[this.tabIndex].pageConfig;
       } else {
-        return this.$route.meta.pageConfig || window.__$uiPageConfig
+        return this.$route.meta.pageConfig || window.__$uiPageConfig;
       }
     }
   },
   watch: {
-    '$route.path' (path) {
-      this.handleIosGesture()
-      this.initTab()
-      this.initBodyStyle()
+    "$route.path"(path) {
+      this.handleIosGesture();
+      this.initTab();
+      this.initBodyStyle();
     }
   },
-    // 初始化
-  created () {
-    this.initTab()
-    this.initPaths()
+  // 初始化
+  created() {
+    this.initTab();
+    this.initPaths();
     this.$nextTick(() => {
-      this.handleIosGesture()
-    })
+      this.handleIosGesture();
+    });
   },
   methods: {
-    handleNavIconTap () {
-      this.showSlideMenu = !this.showSlideMenu
+    handleNavIconTap() {
+      this.showSlideMenu = !this.showSlideMenu;
     },
     // 初始化底部标签栏
-    initTab () {
-      this.tabBar = this.getTabBar()
-      this.tabBarList = this.tabBar.list
+    initTab() {
+      this.tabBar = this.getTabBar();
+      this.tabBarList = this.tabBar.list;
       if (this.tabBar.paths) {
-        this.tabIndex = this.tabBar.paths.indexOf(this.$route.path)
+        this.tabIndex = this.tabBar.paths.indexOf(this.$route.path);
       }
     },
     // 初始化路由
-    initPaths () {
-      let routes = this.$router.options.routes
-      this.paths = routes.map((item) => {
-        return item.path
-      })
+    initPaths() {
+      let routes = this.$router.options.routes;
+      this.paths = routes.map(item => {
+        return item.path;
+      });
     },
-    initBodyStyle () {
+    initBodyStyle() {
       if (this.winConfig && this.winConfig.backgroundColor) {
-        document.body.style.backgroundColor = this.winConfig.backgroundColor
+        document.body.style.backgroundColor = this.winConfig.backgroundColor;
       }
     },
     // iOS是否禁用侧滑退出
-    handleIosGesture () {
+    handleIosGesture() {
       if (ui.IS_IOS) {
-        ui.setPagePopGesture && ui.setPagePopGesture({
-          openPagePopGesture: !this.pageConfig.disableIosGesture
-        })
+        ui.setPagePopGesture &&
+          ui.setPagePopGesture({
+            openPagePopGesture: !this.pageConfig.disableIosGesture
+          });
       }
     },
     // tabBar示例用到，底部标签栏切换前事件处理
-    handleTabBeforeChange ({
-      id,
-      index,
-      next
-    }) {
-      next()
+    handleTabBeforeChange({ id, index, next }) {
+      next();
     },
 
     // tabBar示例用到，底部标签栏切换后事件处理
-    handleTabChange ({
-      id,
-      index
-    }) {
-
-    },
+    handleTabChange({ id, index }) {},
     // 回退处理
-    handleBack () {
-      ui.navigateBack()
+    handleBack() {
+      ui.navigateBack();
     },
-    getTabBar () {
-      let tabBars = [this.$router.options.tabBar, ...this.$router.options.pageTabBars]
+    getTabBar() {
+      let tabBars = [
+        this.$router.options.tabBar,
+        ...this.$router.options.pageTabBars
+      ];
       for (let i = 0; i < tabBars.length; i++) {
-        if (tabBars[i].paths && tabBars[i].paths.indexOf(this.$route.path) > -1) {
-          return tabBars[i]
+        if (
+          tabBars[i].paths &&
+          tabBars[i].paths.indexOf(this.$route.path) > -1
+        ) {
+          return tabBars[i];
         }
       }
-      return {}
+      return {};
     }
-
   },
-  mounted () {
-
-  }
-}
+  mounted() {}
+};
 </script>
 
 <template>
@@ -268,43 +269,45 @@ export default {
 
 
 <style lang="less">
- @import './static/css/animate.css';
- @import './static/css/loading.less';
- @import './static/font/iconfont.css';
+@import "./static/css/animate.css";
+@import "./static/css/loading.less";
+@import "./static/font/iconfont.css";
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Microsoft YaHei', SimSun, sans-serif;
-    -webkit-touch-callout: none;
+  font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB",
+    "Microsoft YaHei", SimSun, sans-serif;
+  -webkit-touch-callout: none;
 }
 
 html,
 body {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 #ui-app {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
-.touchui-hover{
+.touchui-hover {
   background-color: #eee !important;
 }
-.iphonex-bottom{
+.iphonex-bottom {
   height: env(safe-area-inset-bottom);
   background-color: #fff;
-  width:100%;
+  width: 100%;
 }
 .ui-nav-bar {
   top: 0;
   left: 0;
   width: 100%;
-  .nav-bar-left, .nav-bar-right {
+  .nav-bar-left,
+  .nav-bar-right {
     position: relative;
     width: 66px;
     text-align: center;
@@ -319,7 +322,7 @@ body {
       margin-left: 10px;
     }
   }
-  .nav-bar-center-text{
+  .nav-bar-center-text {
     .mix-text-overflow();
   }
 }

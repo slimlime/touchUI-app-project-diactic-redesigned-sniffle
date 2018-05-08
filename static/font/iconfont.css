@@ -23,3 +23,11 @@
 .icon-home:before {
     content: "\e62b";
 }
+/* -TODO: Import the icons here. iconfont.css js svg */
+.lt-ie8 .cf-icon-web .icon-web{
+    content: "\e300";
+}
+
+.icon-technology:before {
+    content: "\e308";
+  }

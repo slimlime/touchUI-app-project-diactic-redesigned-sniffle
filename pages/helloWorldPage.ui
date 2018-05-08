@@ -1,7 +1,10 @@
 <!--Hello world! This is my new page's title. -->
 <template>
-  <ui-page>
+  <ui-page class="pageContent">
+    <ui-view class="viewContent">
+      <ui-button type="primary" plain="true">Main 主要操作-镂空</ui-button>
 
+    </ui-view>
   </ui-page>
 </template>
 
@@ -12,6 +15,7 @@ export default {
   },
   data() {
     return {
+      buttonText: "buttonText",
       helloKey: 'hello',
       helloVal: 0,
       text: "" ,
@@ -27,5 +31,10 @@ export default {
 </script>
 
 <style lang="less">
-
+.pageContent{
+  // background: slateblue;
+}
+.viewContent{
+  background: darkblue;
+}
 </style>
