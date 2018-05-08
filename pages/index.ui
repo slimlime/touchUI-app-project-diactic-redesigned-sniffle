@@ -13,45 +13,45 @@
 <script>
 export default {
   config: {
-    navigationBarTitleText: 'Home 首页',
-    backgroundColor: '#F4F4F4',
-    navigationBarTextStyle: 'black'
+    navigationBarTitleText: "Home 首页",
+    backgroundColor: "#F4F4F4",
+    navigationBarTextStyle: "black"
   },
-  data () {
+  data() {
     return {
-      buttonText: '界面跳转',
-      isShow:false
-    }
+      buttonText: "Nav text 界面跳转",
+      isShow: false
+    };
   },
   methods: {
     sliderShow() {
-      this.isShow=true
+      this.isShow = true;
     },
-    navHandle () {
+    navHandle() {
       ui.navigateTo({
-        url: '/pages/detail'
-      })
+        url: "/pages/detail"
+      });
     }
   },
   mounted() {
+    // Only first page needs to be delayed in mount for API.
     //首屏页面需要在mounted中延时才能调用框架api，其他页面不需要延时
     setTimeout(() => {
       //关闭app启动图
-      ui.closeSplashscreen()
+      ui.closeSplashscreen();
     }, 3500);
   }
-}
-
+};
 </script>
 
 <style lang="less">
-.content{
+.content {
   .mix-flex-center();
 }
-.sliderContent{
-  padding:50px 50px 0px 50px;
+.sliderContent {
+  padding: 50px 50px 0px 50px;
 }
-.buttonContent{
-  padding:50px;
+.buttonContent {
+  padding: 50px;
 }
 </style>
