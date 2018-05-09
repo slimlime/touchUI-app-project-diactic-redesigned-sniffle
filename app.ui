@@ -1,7 +1,13 @@
 <script>
 export default {
   config: {
-    pages: ["pages/index", "pages/detail", "pages/helloWorldPage","pages/recipientWorldHello","pages/mapSearchSample"],
+    pages: [
+      "pages/index",
+      "pages/detail",
+      "pages/helloWorldPage",
+      "pages/recipientWorldHello",
+      "pages/mapSearchSample",
+    ],
     theme: {
       "theme-color": "#3399ff"
     },
@@ -34,7 +40,19 @@ export default {
           pagePath: "pages/helloWorldPage",
           iconName: "home",
           selectedIconName: "arrow-left",
-          text: "HelloWorld"
+          text: "HelloWorld map test."
+        },
+        {
+          pagePath: "pages/recipientWorldHello",
+          iconName: "home",
+          selectedIconName: "arrow-right",
+          text: "receiveWorldHello"
+        },
+        {
+          pagePath: "pages/mapSearchSample",
+          iconName: "arrow-right",
+          selectedIconName: "arrow-left",
+          text: "mapSearchSampletest"
         }
       ]
     },

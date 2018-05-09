@@ -1,20 +1,134 @@
 <!--Google maps touchUI component with Google Places API autocomplete-->
+<!--mapSearchTips.ui-->
 <template>
-  <ui-page>
+    <ui-page height="{{conHeight}}">
+      test
+      <ui-view bindtap="searchShow(flag)" class="section {{show?'sectionBack':''}}">
+        <ui-row>
+          <ui-col vertical-align="middle">
+            <ui-view class="analogSearch" ui:if="keywords === ''">Search location 搜索地点</ui-view>
+            <ui-view class="analogSearch" ui:elif="keywords !== ''">{{analogSearch}}</ui-view>
+          </ui-col>
+        </ui-row>
+      </ui-view>
 
-  </ui-page>
-</template>
+
+      <ui-view class="querySearch" style="{{{height:conHeight+'px'}}}" ui:show="{{show}}">
+        <ui-view class="section {{show?'sectionBack':''}}">
+        <ui-form action="/search" bindsubmit="search"> 
+          <ui-row>
+            <ui-col vertical-align="middle">
+              <ui-input bindinput="bindInput" focus="{{ show }}" 
+                        ui:model={{keywords}} type="search"  
+                        bindfocus="bindfocus" bindblur="bindblur" 
+                        name="search" placeholder="Search Location 搜索地点">
+              </ui-input>
+            </ui-col>
+          </ui-row>
+        </ui-form>
+      </ui-view>
+          <ui-view bindtap="associationalSearch($event,'tips',index,item.structured_formatting.main_text,item.place_id,0)" ui:for-item="item" class="text_box" ui:for="{{tips}}">
+          {{item.structured_formatting.main_text}}
+        </ui-view>
+      </ui-view>
+
+
+      <ui-popup ui:model="{{ show2 }}" position="bottom" height="300" mask-style="{{{ backgroundColor: 'transparent' }}}"  hide-on-tap="{{false}}" bindhide="bindhide" bindshow="bindshow">
+         <ui-view class="infobox" bindtap="associationalSearch($event,'tips3',index,item.structured_formatting.main_text,item.place_id,1)" ui:for-item="item" class="text_box" ui:for="{{tips3}}">
+          <ui-row>
+            <ui-col class="info-1">{{item.structured_formatting.main_text}}</ui-col>
+          </ui-row>
+          <ui-row>
+            <ui-col>{{item.description}}</ui-col>
+          </ui-row>
+        </ui-view>
+
+      </ui-popup>
+
+      <ui-fixed-view bottom="0" left="0" right="0" style="height:45px;z-index:1;background-color:#fff;width:100%;text-align:center;line-height:45px;" ui:show="{{show3}}" bindtap="toggle">
+        See search results for `{{keywords}}` 查看“{{keywords}}”搜索结果
+      </ui-fixed-view> 
+
+
+      <ui-map 
+      id="map" 
+      map-service="google"
+      height="{{conHeight}}"
+      markers="{{markers}}"
+      longitude="{{longitude}}"
+      latitude="{{latitude}}"
+      show-location="{{true}}"
+      bindcallouttap="callouttap"
+      scale="18"
+      style="width:100%;height:93vh;">
+    </ui-map>
+    </ui-page>
+  </template>
+
+
 
 <script>
 export default {
   config: {
     navigationBarTitleText: "Google maps touchUI component with Google Places API autocomplete"
   },
+  // - FIXME: rename the tips123 and show123 variables to be more informative. 
   data() {
-    return {}
+    return {
+      conHeight: ui.DEFAULT_CONTENT_HEIGHT,
+      headerHeight: ui.DEFAULT_HEADER_HEIGHT,
+      tips: [],
+      tips2: [],
+      tips3: [],
+      keywords: '',
+      tempKeywords: '',
+      latitude: -27.470125,
+      longitude: 153.021072,
+      analogSearch: '',
+      show: false,
+      show2: false,
+      show3: false,
+      flag: null,
+      markers: []
+    }
   },
-  methods: {},
-  mounted() {}
+  methods: {
+    calloutTap(e) {
+      // Open map nav. Use interface paras to zero in on a location.
+      const tuiSysMapInterfaceObject = {
+        latitude: -27.470125, 
+        longitude: 153.021072, 
+        name: "Brisbane",
+        // - FIXME: Sample code confusing function callbacks. Check docs.
+        success: (res) => {
+          console.log("calloutTap:: success", res);
+        },
+        fail: (res) => {
+          console.log("calloutTap:: fail", res);
+        },
+        complete: (res) => {
+          console.log("calloutTap:: complete", res);
+        }
+      }
+      ui.openSysMap(tuiSysMapInterfaceObject);
+    },
+    bindHide() {
+      // - FIXME: show3
+      console.log("bindHide");
+      this.show3 = true;
+    },
+    bindShow() {
+      console.log('bindShow');
+      this.show3 = false;
+    },
+    toggle() {
+      this.show2 = true;
+    }
+
+  },
+  mounted() {
+    console.log("mapSearchSample::mounted:: ");
+  }
 }
 </script>
 

@@ -7,7 +7,6 @@
       <ui-input placeholder="autocomplete text box"
                 ui:model='{{autocompleteText}}'>
       </ui-input>
-      
       <!-- Test TouchUI's map component first for Google Map service. -->
       <ui-map id="map" 
           map-service="google" 
@@ -17,7 +16,7 @@
           longitude="{{longitude}}"
           show-location="{{true}}"
           scale="18"
-          style="width: 100%; height: 65vh;"> 
+          style="width: 100%; height: 64vh;"> 
       </ui-map>
 
     </ui-view>

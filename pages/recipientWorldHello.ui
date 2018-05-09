@@ -8,7 +8,7 @@
 <script>
 export default {
   config: {
-    navigationBarTitleText: "recipient of helloWorld page's hello object passed through nav."
+    navigationBarTitleText: "recipient of helloWorld page's test hello object passed through nav."
   },
   data() {
     return {}
