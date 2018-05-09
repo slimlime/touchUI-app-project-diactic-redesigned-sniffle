@@ -2,8 +2,21 @@
 <template>
   <ui-page class="pageContent">
     <ui-view class="viewContent">
-      <ui-button type="primary" plain="true">Main 主要操作-镂空</ui-button>
+      <ui-button type="primary" plain="true">First button: Redirect to page -  </ui-button>
+      <ui-button type="primary" bindTap="navHandle" plain="true">Second button: Navigate to page - Send object to second page.</ui-button>
 
+      <!-- Test TouchUI's map component first for Google Map service. -->
+      <ui-map id="map" 
+      map-service="google" 
+      height="{{conHeight}}" 
+      markers="{{markers}}" 
+      latitude="{{latitude}}"
+      longitude="{{longitude}}"
+      show-location="{{true}}"
+      scale="18"
+      style="width: 100%; height: 93vh;"> 
+      </ui-map>
+      
     </ui-view>
   </ui-page>
 </template>
@@ -16,25 +29,38 @@ export default {
   data() {
     return {
       buttonText: "buttonText",
-      helloKey: 'hello',
+      helloKey: "hello",
       helloVal: 0,
-      text: "" ,
+      text: "",
       getText: "",
-      list: [10, 20]
+      list: [10, 20],
+      // TouchUI Map component testing
+      conHeight: ui.DEFAULT_CONTENT_HEIGHT,
+      headerHeight: ui.DEFAULT_HEADER_HEIGHT,
+      tips: [],
+      markers: [],
+      latitude: -27.470125,
+      longitude: 153.021072,
+
+      autocompleteText: ""
+    };
+  },
+  methods: {
+    navHandle() {
+      ui.navigateTo({
+        url
+      });
     }
   },
-  methods: {},
-  mounted() {
-
-  }
-}
+  mounted() {}
+};
 </script>
 
 <style lang="less">
-.pageContent{
-  // background: slateblue;
+.pageContent {
+  background: red;
 }
-.viewContent{
+.viewContent {
   background: darkblue;
 }
 </style>

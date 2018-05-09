@@ -1,7 +1,7 @@
 <script>
 export default {
   config: {
-    pages: ["pages/index", "pages/detail", "pages/helloWorldPage"],
+    pages: ["pages/index", "pages/detail", "pages/helloWorldPage","pages/recipientWorldHello"],
     theme: {
       "theme-color": "#3399ff"
     },
