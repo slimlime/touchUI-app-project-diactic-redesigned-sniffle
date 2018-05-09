@@ -70,9 +70,10 @@
 <script>
 export default {
   config: {
-    navigationBarTitleText: "Google maps touchUI component with Google Places API autocomplete"
+    navigationBarTitleText:
+      "Google maps touchUI component with Google Places API autocomplete"
   },
-  // - FIXME: rename the tips123 and show123 variables to be more informative. 
+  // - FIXME: rename the tips123 and show123 variables to be more informative.
   data() {
     return {
       conHeight: ui.DEFAULT_CONTENT_HEIGHT,
@@ -80,56 +81,174 @@ export default {
       tips: [],
       tips2: [],
       tips3: [],
-      keywords: '',
-      tempKeywords: '',
+      keywords: "",
+      tempKeywords: "",
       latitude: -27.470125,
       longitude: 153.021072,
-      analogSearch: '',
-      show: false,
+      analogSearch: "",
+      show: true,
       show2: false,
       show3: false,
       flag: null,
       markers: []
-    }
+    };
   },
   methods: {
-    calloutTap(e) {
+    // - FIXME: camelcase, fix functions and the flag variables.
+    callouttap(e) {
       // Open map nav. Use interface paras to zero in on a location.
       const tuiSysMapInterfaceObject = {
-        latitude: -27.470125, 
-        longitude: 153.021072, 
+        latitude: -27.470125,
+        longitude: 153.021072,
         name: "Brisbane",
         // - FIXME: Sample code confusing function callbacks. Check docs.
-        success: (res) => {
+        success: res => {
           console.log("calloutTap:: success", res);
         },
-        fail: (res) => {
+        fail: res => {
           console.log("calloutTap:: fail", res);
         },
-        complete: (res) => {
+        complete: res => {
           console.log("calloutTap:: complete", res);
         }
-      }
+      };
       ui.openSysMap(tuiSysMapInterfaceObject);
     },
-    bindHide() {
+    bindhide() {
       // - FIXME: show3
       console.log("bindHide");
       this.show3 = true;
     },
-    bindShow() {
-      console.log('bindShow');
+    bindshow() {
+      console.log("bindShow");
       this.show3 = false;
     },
     toggle() {
       this.show2 = true;
-    }
+    },
+    bindTap2() {
+      console.log("bindTap2");
+    },
+    // Activates on change in input
+    bindInput(e) {
+      this.show = true;
+      // - FIXME: that = this!?!?!?!?! Why does the sample need to maintain reference to old copy of page
+      const that = this;
+      ui.request({
+        url: "https://maps.googleapis.com/maps/api/place/autocomplete/json",
+        data: {
+          input: this.keywords,
+          language: "en",
+          key: "AIzaSyAkMGyXxYXxJkWR1VJmGaa66ma-2Ni13kQ"
+        },
+        success: res => {
+          that.tips = res.data.predictions;
+        }
+      });
+    },
+    search() {
+      //  - FIXME: that = this?!?!?!?
+      this.show2 = true;
+      ui.request({
+        url: "https://maps.googleapis.com/maps/api/place/autocomplete/json",
+        data: {
+          input: this.keywords,
+          language: "en",
+          key: "AIzaSyAkMGyXxYXxJkWR1VJmGaa66ma-2Ni13kQ"
+        },
+        success: res => {
+          that.tips3 = res.data.predictions;
+          console.log("search:: that.tips3", that.tips3);
+        }
+      });
+    },
+    // Associative words search?
+    associationalSearch(e, data, index, title, place_id, flag) {
+      let that = this;
+      this.show3 = false;
+      var keywords = title;
+      if (flag === 0) {
+        this.analogSearch = keywords;
+        this.tempKeywords = keywords;
+        this.flag = 0;
+      } else if (flag === 1) {
+        this.flag = 1;
+        this.tempKeywords = keywords;
+      }
+      ui.request({
+        url: "https://maps.googleapis.com/maps/api/place/details/json",
+        data: {
+          placeid: place_id,
+          language: "en",
+          key: "AIzaSyAkMGyXxYXxJkWR1VJmGaa66ma-2Ni13kQ"
+        },
+        success: function(res) {
+          console.log(res);
+          that.latitude = res.data.result.geometry.location.lat;
+          that.longitude = res.data.result.geometry.location.lng;
+          let markersSearch = [
+            {
+              id: 1,
+              latitude: that.latitude,
+              longitude: that.longitude,
+              iconPath: require("#/images/map/posi_gmap_old.png"),
+              label: {
+                fontSize: 12,
+                color: "#FF0000",
+                content: "",
+                x: 0.5,
+                y: 0.5
+              },
+              callout: {
+                content: `<div class="c-wrap">
+                            <div class="info">
+                              <p class="a-name">${res.data.result.name}</p>
+                              <p class="a-info">${
+                                res.data.result.formatted_address
+                              }</p>
+                            </div>
+                            <div class="click">导航</div>
+                          </div>
+                          `,
+                color: "#000000",
+                fontSize: 16,
+                bgColor: "#ffffff",
+                borderRadius: 10,
+                display: "ALWAYS",
+                padding: 6
+              },
+              width: 30,
+              height: 40
+            }
+          ];
+          that.markers = JSON.parse(JSON.stringify(markersSearch));
+        }
+      });
 
+      this.show = false;
+      this.show2 = false;
+    },
+    bindfocus() {
+      this.show = true;
+      this.bindInput();
+    },
+    bindblur() {
+      this.show = false;
+    },
+    // - FIXME: Undocumented "flag" variable in the SAMPLE CODE.~ >5 undocumented flags.
+    searchShow() {
+      this.show = true;
+      if (this.flag === 0 ) {
+        this.keywords = this.tempKeywords;
+      } else if (this.flag === 1) {
+        return false;
+      }
+    }
   },
   mounted() {
     console.log("mapSearchSample::mounted:: ");
   }
-}
+};
 </script>
 
 <style lang="less">
