@@ -7,6 +7,7 @@ export default {
       "pages/helloWorldPage",
       "pages/recipientWorldHello",
       "pages/mapSearchSample",
+      "pages/mapSearchTips"
     ],
     theme: {
       "theme-color": "#3399ff"
