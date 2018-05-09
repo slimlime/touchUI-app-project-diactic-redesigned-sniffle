@@ -4,19 +4,22 @@
     <ui-view class="viewContent">
       <ui-button type="primary" plain="true">First button: Redirect to page -  </ui-button>
       <ui-button type="primary" bindTap="navHandle" plain="true">Second button: Navigate to page - Send object to second page.</ui-button>
-
+      <ui-input placeholder="autocomplete text box"
+                ui:model='{{autocompleteText}}'>
+      </ui-input>
+      
       <!-- Test TouchUI's map component first for Google Map service. -->
       <ui-map id="map" 
-      map-service="google" 
-      height="{{conHeight}}" 
-      markers="{{markers}}" 
-      latitude="{{latitude}}"
-      longitude="{{longitude}}"
-      show-location="{{true}}"
-      scale="18"
-      style="width: 100%; height: 93vh;"> 
+          map-service="google" 
+          height="{{conHeight}}" 
+          markers="{{markers}}" 
+          latitude="{{latitude}}"
+          longitude="{{longitude}}"
+          show-location="{{true}}"
+          scale="18"
+          style="width: 100%; height: 65vh;"> 
       </ui-map>
-      
+
     </ui-view>
   </ui-page>
 </template>
