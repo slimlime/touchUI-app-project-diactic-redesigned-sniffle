@@ -1,0 +1,23 @@
+<!--Google maps touchUI component with Google Places API autocomplete-->
+<template>
+  <ui-page>
+
+  </ui-page>
+</template>
+
+<script>
+export default {
+  config: {
+    navigationBarTitleText: "Google maps touchUI component with Google Places API autocomplete"
+  },
+  data() {
+    return {}
+  },
+  methods: {},
+  mounted() {}
+}
+</script>
+
+<style lang="less">
+
+</style>
